@@ -87,18 +87,53 @@ def get_list_info(page):
 
                     id_tag = info['resultData']['data'][num]['id']
                     create_time = info['resultData']['data'][num]['pubDate']
-                    if id_tag not in old_ids:
+                    type = info['resultData']['data'][num]['projectType']
 
-                        cursor.execute('replace into purchase_yuecai_list values ("%s","%s","%s","%s")' %
-                                       (
-                                           id_tag,
-                                           create_time,
-                                           str(datetime.datetime.now()),
-                                           str(datetime.datetime.now())[:10]
-                                       ))
-                        conn.commit()
-                        print str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
-                        break
+                    if id_tag not in old_ids:
+                        if type == '采购':
+
+                            cursor.execute('replace into purchase_yuecai_list values ("%s","%s","%s","%s")' %
+                                           (
+                                               id_tag,
+                                               create_time,
+
+                                               str(datetime.datetime.now()),
+                                               str(datetime.datetime.now())[:10]
+                                           ))
+                            conn.commit()
+                            print str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
+                            break
+                        elif type == '竞价':
+                            bidcode_t = info['resultData']['data'][num]['bidcode_t']
+                            companyId = info['resultData']['data'][num]['companyId']
+                            id_tag = info['resultData']['data'][num]['id']
+
+                            url_part = bidcode_t + '-' + companyId + '-' + id_tag
+                            cursor.execute('replace into purchase_yuecai_list values ("%s","%s","%s","%s")' %
+                                           (
+                                               url_part,
+                                               create_time,
+
+                                               str(datetime.datetime.now()),
+                                               str(datetime.datetime.now())[:10]
+                                           ))
+                            conn.commit()
+                            print str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
+                            break
+                        elif type == '招标':
+                            cursor.execute('replace into purchase_yuecai_list values ("%s","%s","%s","%s")' %
+                                           (
+                                               id_tag,
+                                               create_time,
+
+                                               str(datetime.datetime.now()),
+                                               str(datetime.datetime.now())[:10]
+                                           ))
+                            conn.commit()
+                            print str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
+                            break
+
+
                     else:
                         print '检测到已爬信息  ' + str(id_tag) + ' _@_ ' + str(datetime.datetime.now())
                         # else:

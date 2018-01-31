@@ -103,7 +103,7 @@ def get_list_info(page):
                                                str(datetime.datetime.now())[:10]
                                            ))
                             conn.commit()
-                            print str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
+                            print '采购类' + str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
                             break
                         elif type == '竞价':
                             bidcode_t = info['resultData']['data'][num]['bidcode_t']
@@ -120,7 +120,19 @@ def get_list_info(page):
                                                str(datetime.datetime.now())[:10]
                                            ))
                             conn.commit()
-                            print str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
+                            print '竞价类' +str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
+                            break
+                        elif type == '招标':
+                            cursor.execute('replace into purchase_yuecai_list values ("%s","%s","%s","%s")' %
+                                           (
+                                               id_tag,
+                                               create_time,
+
+                                               str(datetime.datetime.now()),
+                                               str(datetime.datetime.now())[:10]
+                                           ))
+                            conn.commit()
+                            print '招标类'+str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
                             break
 
                     else:
