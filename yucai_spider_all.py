@@ -101,14 +101,14 @@ def get_list_info(page):
                                                str(datetime.datetime.now())[:10]
                                            ))
                             conn.commit()
-                            print str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
+                            print '采购类 '+str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
                             break
                         elif type == '竞价':
                             bidcode_t = info['resultData']['data'][num]['bidcode_t']
                             companyId = info['resultData']['data'][num]['companyId']
                             id_tag = info['resultData']['data'][num]['id']
 
-                            url_part = bidcode_t + '-' + companyId + '-' + id_tag
+                            url_part = str(bidcode_t) + '-' + str(companyId) + '-' + str(id_tag)
                             cursor.execute('replace into purchase_yuecai_list values ("%s","%s","%s","%s")' %
                                            (
                                                url_part,
@@ -118,7 +118,7 @@ def get_list_info(page):
                                                str(datetime.datetime.now())[:10]
                                            ))
                             conn.commit()
-                            print str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
+                            print '竞价类 '+str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
                             break
                         elif type == '招标':
                             cursor.execute('replace into purchase_yuecai_list values ("%s","%s","%s","%s")' %
@@ -130,25 +130,14 @@ def get_list_info(page):
                                                str(datetime.datetime.now())[:10]
                                            ))
                             conn.commit()
-                            print str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
+                            print '招标类 '+str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
                             break
 
 
-                    else:
-                        print '检测到已爬信息  ' + str(id_tag) + ' _@_ ' + str(datetime.datetime.now())
-                        # else:
-                        #     id_tag = info['resultData']['data'][num]['id']
-                        #     create_time = info['resultData']['data'][num]['pubDate']
-                        #     cursor.execute('insert into purchase_yuecai_list values ("%s","%s","%s","%s")' %
-                        #                    (
-                        #                        id_tag,
-                        #                        create_time,
-                        #                        str(datetime.datetime.now()),
-                        #                        str(datetime.datetime.now())[:10]
-                        #                    ))
-                        #     conn.commit()
-                        #     print str(id_tag) + '  插入成功'
-                        break
+                    # else:
+                    #     print '检测到已爬信息  ' + str(id_tag) + ' _@_ ' + str(datetime.datetime.now())
+                    #     quit()
+                    #     break
         except Exception, e:
             if str(e).find('2006') >= 0:
                 print '休息两秒 重连数据库(2006)'
