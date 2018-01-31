@@ -75,6 +75,8 @@ def get_list_info(page):
     while True:
         try:
             for x in range(1, int(page) + 1):
+                print '在爬第'+str(x)+'页'
+
                 payload2 = {"word": None, "zone": None, "page": x, "size": 20, "sort": None, "teseData": 2}
 
                 response = requests.post(url, data=json.dumps(payload2), headers=headers, timeout=30)
@@ -82,9 +84,10 @@ def get_list_info(page):
                 info = json.loads(response.text)
 
                 total_pages = len(info['resultData']['data'])
+                print total_pages
 
-                for num in range(1, total_pages + 1):
-
+                for num in range(total_pages):
+                    print '第'+str(num+1)+'条'
                     id_tag = info['resultData']['data'][num]['id']
                     create_time = info['resultData']['data'][num]['pubDate']
                     type = info['resultData']['data'][num]['projectType']
@@ -101,8 +104,8 @@ def get_list_info(page):
                                                str(datetime.datetime.now())[:10]
                                            ))
                             conn.commit()
-                            print '采购类 '+str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
-                            break
+                            print '采购类 '+str(id_tag) + ' 发布时间: '+str(create_time) +'  插入成功 _@_ ' + str(datetime.datetime.now())
+
                         elif type == '竞价':
                             bidcode_t = info['resultData']['data'][num]['bidcode_t']
                             companyId = info['resultData']['data'][num]['companyId']
@@ -118,8 +121,8 @@ def get_list_info(page):
                                                str(datetime.datetime.now())[:10]
                                            ))
                             conn.commit()
-                            print '竞价类 '+str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
-                            break
+                            print '竞价类 '+str(id_tag) +' 发布时间: '+str(create_time) +'  插入成功 _@_ ' + str(datetime.datetime.now())
+
                         elif type == '招标':
                             cursor.execute('replace into purchase_yuecai_list values ("%s","%s","%s","%s")' %
                                            (
@@ -130,14 +133,8 @@ def get_list_info(page):
                                                str(datetime.datetime.now())[:10]
                                            ))
                             conn.commit()
-                            print '招标类 '+str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
-                            break
-
-
-                    # else:
-                    #     print '检测到已爬信息  ' + str(id_tag) + ' _@_ ' + str(datetime.datetime.now())
-                    #     quit()
-                    #     break
+                            print '招标类 '+str(id_tag) + ' 发布时间: '+str(create_time) +'  插入成功 _@_ ' + str(datetime.datetime.now())
+            break
         except Exception, e:
             if str(e).find('2006') >= 0:
                 print '休息两秒 重连数据库(2006)'
@@ -166,9 +163,6 @@ def main():
     print '有' + str(page) + '页'
     get_list_info(page)
 
-
-
-
 if __name__ == '__main__':
     conn = MySQLdb.connect(host="221.226.72.226", port=13306, user="root", passwd="somao1129", db="tanke",
                            charset="utf8")
@@ -178,6 +172,7 @@ if __name__ == '__main__':
     # max_create_time = cursor.fetchall()[0][0]
 
     old_ids = []
+    cursor.execute('truncate table purchase_yuecai_list')
     cursor.execute('select id from purchase_yuecai_list')
     old = cursor.fetchall()
     for y in range(0, len(old)):

@@ -89,7 +89,11 @@ def get_list_info(page):
                     id_tag = info['resultData']['data'][num]['id']
                     create_time = info['resultData']['data'][num]['pubDate']
                     type = info['resultData']['data'][num]['projectType']
-                    print type
+
+                    print id_tag
+                    print create_time
+                    print max_pub_time
+
                     if get_timestamp(create_time + ':00') > get_timestamp(max_pub_time):
 
                         if type == '采购':
@@ -104,7 +108,7 @@ def get_list_info(page):
                                            ))
                             conn.commit()
                             print '采购类 ' + str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
-                            break
+
                         elif type == '竞价':
                             bidcode_t = info['resultData']['data'][num]['bidcode_t']
                             companyId = info['resultData']['data'][num]['companyId']
@@ -121,7 +125,7 @@ def get_list_info(page):
                                            ))
                             conn.commit()
                             print '竞价类 ' +str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
-                            break
+
                         elif type == '招标':
                             cursor.execute('replace into purchase_yuecai_list values ("%s","%s","%s","%s")' %
                                            (
@@ -133,14 +137,14 @@ def get_list_info(page):
                                            ))
                             conn.commit()
                             print '招标类 '+str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
-                            break
+
 
                     else:
                         print '检测到已爬信息  ' + str(id_tag) + ' _@_ ' + str(datetime.datetime.now())
                         quit()
-                        break
 
 
+            break
         except Exception, e:
             if str(e).find('2006') >= 0:
                 print '休息两秒 重连数据库(2006)'
