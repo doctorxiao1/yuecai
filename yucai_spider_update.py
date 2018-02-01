@@ -76,6 +76,7 @@ def get_list_info(page):
     while True:
         try:
             for x in range(1, int(page) + 1):
+                print '在爬第' + str(x) + '页'
                 payload2 = {"word": None, "zone": None, "page": x, "size": 20, "sort": None, "teseData": 2}
 
                 response = requests.post(url, data=json.dumps(payload2), headers=headers, timeout=30)
@@ -84,8 +85,8 @@ def get_list_info(page):
 
                 total_pages = len(info['resultData']['data'])
 
-                for num in range(1, total_pages + 1):
-
+                for num in range(total_pages):
+                    print '第' + str(num + 1) + '条'
                     id_tag = info['resultData']['data'][num]['id']
                     create_time = info['resultData']['data'][num]['pubDate']
                     type = info['resultData']['data'][num]['projectType']
@@ -107,14 +108,15 @@ def get_list_info(page):
                                                str(datetime.datetime.now())[:10]
                                            ))
                             conn.commit()
-                            print '采购类 ' + str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
+                            print '采购类 ' + str(id_tag) + ' 发布时间: ' + str(create_time) + '  插入成功 _@_ ' + str(
+                                datetime.datetime.now())
 
                         elif type == '竞价':
                             bidcode_t = info['resultData']['data'][num]['bidcode_t']
                             companyId = info['resultData']['data'][num]['companyId']
                             id_tag = info['resultData']['data'][num]['id']
 
-                            url_part = bidcode_t + '-' + companyId + '-' + id_tag
+                            url_part = str(bidcode_t) + '-' + str(companyId) + '-' + str(id_tag)
                             cursor.execute('replace into purchase_yuecai_list values ("%s","%s","%s","%s")' %
                                            (
                                                url_part,
@@ -124,7 +126,8 @@ def get_list_info(page):
                                                str(datetime.datetime.now())[:10]
                                            ))
                             conn.commit()
-                            print '竞价类 ' +str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
+                            print '竞价类 ' + str(id_tag) + ' 发布时间: ' + str(create_time) + '  插入成功 _@_ ' + str(
+                                datetime.datetime.now())
 
                         elif type == '招标':
                             cursor.execute('replace into purchase_yuecai_list values ("%s","%s","%s","%s")' %
@@ -136,13 +139,13 @@ def get_list_info(page):
                                                str(datetime.datetime.now())[:10]
                                            ))
                             conn.commit()
-                            print '招标类 '+str(id_tag) + '  插入成功 _@_ ' + str(datetime.datetime.now())
-
+                            print '招标类 ' + str(id_tag) + ' 发布时间: ' + str(create_time) + '  插入成功 _@_ ' + str(
+                                datetime.datetime.now())
 
                     else:
-                        print '检测到已爬信息  ' + str(id_tag) + ' _@_ ' + str(datetime.datetime.now())
+                        print '检测到已爬信息  ' + str(id_tag) + ' 发布时间: ' + str(create_time) + ' _@_ ' + str(
+                            datetime.datetime.now())
                         quit()
-
 
             break
         except Exception, e:
