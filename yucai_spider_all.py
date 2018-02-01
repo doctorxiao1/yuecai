@@ -172,7 +172,7 @@ if __name__ == '__main__':
     # max_create_time = cursor.fetchall()[0][0]
 
     old_ids = []
-    cursor.execute('truncate table purchase_yuecai_list')
+    # cursor.execute('truncate table purchase_yuecai_list')
     cursor.execute('select id from purchase_yuecai_list')
     old = cursor.fetchall()
     for y in range(0, len(old)):
