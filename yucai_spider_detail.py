@@ -20,6 +20,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 
+
 def re2_findall(pattern, html):
     if re.findall(pattern, html, re.S):
         return re.findall(pattern, html, re.S)
@@ -91,6 +92,7 @@ def get_parse(url):
                 return None
                 break
 
+proxies = get_proxy()
 
 def get_need_ids():
     conn = MySQLdb.connect(host="221.226.72.226", port=13306, user="root", passwd="somao1129", db="tanke",
@@ -519,7 +521,9 @@ def get_info(id):
 
 
 def main_detail():
+
     need_ids = get_need_ids()
+
 
     start_no = 0
     end_no = len(need_ids)
@@ -536,7 +540,4 @@ def main_detail():
         start_no += thread_num
 
 
-# if __name__ == '__main__':
-#     proxies = get_proxy()
-#     main_detail()
 

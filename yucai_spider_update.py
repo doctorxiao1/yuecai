@@ -78,7 +78,9 @@ def get_list_info(page):
     print '获取上次跑的最新的时间  ' + str(max_pub_time)
 
     url = 'http://iris.yuecai.com/iris/v1/purchase/search'
-    while True:
+
+
+    while True :
         try:
             for x in range(1, int(page) + 1):
                 print '在爬第' + str(x) + '页'
@@ -150,7 +152,8 @@ def get_list_info(page):
                     else:
                         print '检测到已爬信息  ' + str(id_tag) + ' 发布时间: ' + str(create_time) + ' _@_ ' + str(
                             datetime.datetime.now())
-                        quit()
+                        return
+
 
             break
         except Exception, e:
