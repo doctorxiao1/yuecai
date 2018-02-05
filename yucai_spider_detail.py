@@ -518,7 +518,7 @@ def get_info(id):
         print traceback.format_exc()
 
 
-def main():
+def main_detail():
     need_ids = get_need_ids()
 
     start_no = 0
@@ -536,7 +536,7 @@ def main():
         start_no += thread_num
 
 
-if __name__ == '__main__':
-    proxies = get_proxy()
-    main()
+# if __name__ == '__main__':
+#     proxies = get_proxy()
+#     main_detail()
 

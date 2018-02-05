@@ -72,6 +72,11 @@ def get_list_info(page):
                            charset="utf8")
     cursor = conn.cursor()
 
+    cursor.execute('select max(createtime) from purchase_yuecai_list')
+    max_pub_time = cursor.fetchall()[0][0]
+
+    print '获取上次跑的最新的时间  ' + str(max_pub_time)
+
     url = 'http://iris.yuecai.com/iris/v1/purchase/search'
     while True:
         try:
@@ -171,22 +176,22 @@ def get_list_info(page):
                 break
 
 
-def main():
+def main_update():
     page = get_page_number()
     print '有' + str(page) + '页'
     get_list_info(page)
 
 
-if __name__ == '__main__':
-    conn = MySQLdb.connect(host="221.226.72.226", port=13306, user="root", passwd="somao1129", db="tanke",
-                           charset="utf8")
-    cursor = conn.cursor()
-
-    cursor.execute('select max(createtime) from purchase_yuecai_list')
-    max_pub_time = cursor.fetchall()[0][0]
-
-    cursor.close()
-    conn.close()
-    print '获取上次跑的最新的时间  ' + str(max_pub_time)
-
-    main()
+# if __name__ == '__main__':
+#     conn = MySQLdb.connect(host="221.226.72.226", port=13306, user="root", passwd="somao1129", db="tanke",
+#                            charset="utf8")
+#     cursor = conn.cursor()
+#
+    # cursor.execute('select max(createtime) from purchase_yuecai_list')
+    # max_pub_time = cursor.fetchall()[0][0]
+    #
+    # cursor.close()
+    # conn.close()
+    # print '获取上次跑的最新的时间  ' + str(max_pub_time)
+#
+#     main_update()
