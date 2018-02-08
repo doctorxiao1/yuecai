@@ -68,6 +68,8 @@ def get_page_number():
 
 
 def get_list_info(page):
+    update_ids = []
+
     conn = MySQLdb.connect(host="221.226.72.226", port=13306, user="root", passwd="somao1129", db="tanke",
                            charset="utf8")
     cursor = conn.cursor()
@@ -79,8 +81,7 @@ def get_list_info(page):
 
     url = 'http://iris.yuecai.com/iris/v1/purchase/search'
 
-
-    while True :
+    while True:
         try:
             for x in range(1, int(page) + 1):
                 print '在爬第' + str(x) + '页'
@@ -114,6 +115,7 @@ def get_list_info(page):
                                                str(datetime.datetime.now()),
                                                str(datetime.datetime.now())[:10]
                                            ))
+                            update_ids.append(id_tag)
                             conn.commit()
                             print '采购类 ' + str(id_tag) + ' 发布时间: ' + str(create_time) + '  插入成功 _@_ ' + str(
                                 datetime.datetime.now())
@@ -133,6 +135,7 @@ def get_list_info(page):
                                                str(datetime.datetime.now())[:10]
                                            ))
                             conn.commit()
+                            update_ids.append(url_part)
                             print '竞价类 ' + str(id_tag) + ' 发布时间: ' + str(create_time) + '  插入成功 _@_ ' + str(
                                 datetime.datetime.now())
 
@@ -146,14 +149,15 @@ def get_list_info(page):
                                                str(datetime.datetime.now())[:10]
                                            ))
                             conn.commit()
+                            update_ids.append(id_tag)
                             print '招标类 ' + str(id_tag) + ' 发布时间: ' + str(create_time) + '  插入成功 _@_ ' + str(
                                 datetime.datetime.now())
+
 
                     else:
                         print '检测到已爬信息  ' + str(id_tag) + ' 发布时间: ' + str(create_time) + ' _@_ ' + str(
                             datetime.datetime.now())
-                        return
-
+                        return update_ids
 
             break
         except Exception, e:
@@ -182,7 +186,8 @@ def get_list_info(page):
 def main_update():
     page = get_page_number()
     print '有' + str(page) + '页'
-    get_list_info(page)
+    update_ids = get_list_info(page)
+    # print update_ids
 
 
 # if __name__ == '__main__':
@@ -190,11 +195,11 @@ def main_update():
 #                            charset="utf8")
 #     cursor = conn.cursor()
 #
-    # cursor.execute('select max(createtime) from purchase_yuecai_list')
-    # max_pub_time = cursor.fetchall()[0][0]
-    #
-    # cursor.close()
-    # conn.close()
-    # print '获取上次跑的最新的时间  ' + str(max_pub_time)
+# cursor.execute('select max(createtime) from purchase_yuecai_list')
+# max_pub_time = cursor.fetchall()[0][0]
+#
+# cursor.close()
+# conn.close()
+# print '获取上次跑的最新的时间  ' + str(max_pub_time)
 #
 #     main_update()
