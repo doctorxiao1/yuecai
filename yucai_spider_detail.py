@@ -127,8 +127,8 @@ def get_info(id):
         conn = MySQLdb.connect(host="221.226.72.226", port=13306, user="root", passwd="somao1129", db="tanke",
                                charset="utf8")
         cursor = conn.cursor()
-        if len(id) <= 10:
-            url = 'http://www.yuecai.com/purchase/sj-' + id + '.htm'
+        if len(str(id)) <= 10:
+            url = 'http://www.yuecai.com/purchase/sj-' + str(id) + '.htm'
             print url
             content_1 = get_parse(url)
             content = str(content_1.text)
@@ -158,8 +158,8 @@ def get_info(id):
                 business_type = re.findall('<p title="(.*?)">', content)[1]
                 print business_type
 
-                industry = re.findall('<p title="(.*?)">', content)[2]
-                print industry
+                industry = re.findall('<p title=.*?>所属行业：(.*?)<!--<dd>详细地址：-</dd>-->',content,re.S)[0]
+                print detag(industry)
 
                 if content.find('进行中') >= 0:
                     state = '进行中'
@@ -538,6 +538,7 @@ def main_detail():
             t.start()
         t.join()
         start_no += thread_num
+
 
 
 
